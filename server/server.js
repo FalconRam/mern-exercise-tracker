@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 
+require("events").EventEmitter.defaultMaxListeners = 15;
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -18,6 +20,12 @@ connection.once("open", (err, conn) => {
   if (err) console.log(err);
   console.log(`MongoDB database connection established successfully`);
 });
+
+const exerciseRouter = require("./routes/exercise");
+const userRouter = require("./routes/user");
+
+app.use("/exercises", exerciseRouter);
+app.use("/users", userRouter);
 
 app.listen(port, (err) => {
   if (err) console.log(err);
