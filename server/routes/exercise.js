@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const router = require("../../../Todo/server/routes/routes");
 let Exercise = require("../models/exercise.model");
 
-router.get("/", (req, res) => {
+router.get("/get/all", (req, res) => {
   Exercise.find()
     .then((exercises) => res.json(exercises))
     .catch((err) => res.status(400).json("Error: " + err));
@@ -18,8 +18,42 @@ router.post("/add", (req, res) => {
 
   newExercise
     .save()
-    .then(() => res.json("Exercise Added!"))
+    .then(() =>
+      res.json(
+        `${newExercise.description} for ${newExercise.duration} mins added Successfully`
+      )
+    )
     .catch((err) => res.status(400).json("Error: " + err));
+});
+
+router.get("/:id", (req, res) => {
+  Exercise.findById(req.params.id)
+    .then((exercise) => res.json(exercise))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+router.delete("/:id", (req, res) => {
+  Exercise.findByIdAndDelete(req.params.id)
+    .then(() => res.json("Exercise Deleted Successfully"))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+router.put("/update/:id", (req, res) => {
+  Exercise.findByIdAndUpdate(req.params.id).then((exercise) => {
+    exercise.userName = req.body.userName;
+    exercise.description = req.body.description;
+    exercise.duration = Number(req.body.duration);
+    exercise.date = Date.parse(req.body.date);
+
+    exercise
+      .save()
+      .then((exercise) =>
+        res.json(
+          `${exercise.description} for ${exercise.duration} mins updated Successfully`
+        )
+      )
+      .catch((err) => res.status(400).json("Error: " + err));
+  });
 });
 
 module.exports = router;
