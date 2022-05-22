@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const CreateUser = () => {
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -14,7 +14,7 @@ const CreateUser = () => {
     setUserName("");
   };
   return (
-    <div>
+    <div className="container">
       <h3>Create Your Profile</h3>
       <form onSubmit={onSubmit}>
         <div className="form-group">
@@ -27,7 +27,11 @@ const CreateUser = () => {
           />
         </div>
         <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Submit" />
+          <input
+            type="submit"
+            className="btn btn-primary mt-3"
+            value="Submit"
+          />
         </div>
       </form>
     </div>
